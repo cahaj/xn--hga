@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ř.xyz</title>
+  <meta name="description" content="Ř.xyz (xn--hga.xyz)">
+  <meta name="theme-color" content="#E7E4DC">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%23E7E4DC'/%3E%3Ctext x='50' y='78' font-family='Courier New,Courier,monospace' font-weight='700' font-size='80' text-anchor='middle' fill='%2322232A'%3E%C5%98%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #E7E4DC;
+      --paper-edge: #CFCBC0;
+      --ink: #22232A;
+      --ink-faded: #6D6B68;
+      --ribbon: #B3372B;
+      --font: "Courier Prime", "Courier New", Courier, "Nimbus Mono PS", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body { min-height: 100dvh; margin: 0; }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100dvh;
+      color: var(--ink);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      background-color: var(--paper);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.25 0 0 0 0 0.22 0 0 0 0 0.18 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse at 50% 45%, transparent 55%, var(--paper-edge) 130%);
+      padding:
+        calc(2rem + env(safe-area-inset-top, 0px))
+        calc(1.5rem + env(safe-area-inset-right, 0px))
+        calc(1.5rem + env(safe-area-inset-bottom, 0px))
+        calc(1.5rem + env(safe-area-inset-left, 0px));
+    }
+
+    main {
+      width: 100%;
+      max-width: 680px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      font-size: clamp(4.5rem, 25vw, 13rem);
+      font-weight: 700;
+      line-height: 1.1;
+      white-space: nowrap;
+      filter: url(#rough);
+      text-shadow: 0 0 0.6px rgba(34, 35, 42, 0.55);
+      transform-origin: center top;
+      animation: move-up 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    h1 .tld {
+      font-size: 0.3em;
+      font-weight: 400;
+      color: var(--ink-faded);
+      margin-left: 0.15em;
+    }
+
+    .meta-inline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem 1rem;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: var(--ink-faded);
+      text-align: center;
+      opacity: 0;
+      animation: appear 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards;
+    }
+
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .meta-item strong {
+      color: var(--ink);
+    }
+
+    .meta-sep {
+      color: var(--ink-faded);
+      font-weight: bold;
+      user-select: none;
+    }
+
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: transparent;
+      color: var(--ink-faded);
+      border: 1px solid var(--ink-faded);
+      padding: 0.15rem 0.5rem;
+      font-family: var(--font);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .play-btn:hover {
+      background: var(--ribbon);
+      color: var(--paper);
+	  border: 1px solid var(--ribbon)
+    }
+
+    .play-btn svg {
+      width: 8px;
+      height: 8px;
+      fill: currentColor;
+    }
+
+    .ribbon-divider {
+      width: 100%;
+      margin: 2.25rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      opacity: 0;
+      animation: appear 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.8s forwards;
+    }
+
+    .ribbon-divider::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--ink-faded) 0px,
+        var(--ink-faded) 8px,
+        transparent 8px,
+        transparent 14px
+      );
+    }
+
+    .ribbon-divider::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--ribbon) 0px,
+        var(--ribbon) 8px,
+        transparent 8px,
+        transparent 14px
+      );
+      background-position: 5px 0;
+    }
+
+    .text-block {
+      width: 100%;
+      line-height: 1.75;
+      font-size: 1.05rem;
+      color: var(--ink);
+      text-align: justify;
+      opacity: 0;
+      animation: appear 0.6s cubic-bezier(0.16, 1, 0.3, 1) 2.0s forwards;
+    }
+
+    .text-block p {
+      margin: 0 0 1rem 0;
+    }
+
+    .text-block p:first-of-type::first-letter {
+      font-size: 2rem;
+      font-weight: 700;
+      float: left;
+      line-height: 1;
+      margin-right: 0.4rem;
+      color: var(--ribbon);
+    }
+	.text-block a {
+	  color: var(--ink);
+
+	  text-decoration: underline;
+	  text-decoration-color: var(--ribbon);
+	  text-decoration-thickness: 2px;
+	  text-underline-offset: 0.25em;
+	  padding: 0 0.15em;
+	  transition: color 0.15s ease, background-color 0.15s ease;
+	}
+
+	.text-block a:hover {
+	  color: var(--paper);
+	  background-color: var(--ribbon);
+	  text-decoration: none;
+	}
+
+	.text-block a:focus-visible {
+	  outline: 2px dashed var(--ribbon);
+	  outline-offset: 3px;
+	}
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--ink-faded);
+      opacity: 0;
+      animation: appear 0.6s cubic-bezier(0.16, 1, 0.3, 1) 2.2s forwards;
+    }
+
+    footer a {
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-color: var(--ribbon);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.3em;
+    }
+
+    footer a:hover { 
+	  color: var(--paper);
+	  background-color: var(--ribbon);
+	  text-decoration: none;
+	}
+
+    .strike { animation: strike 1.2s cubic-bezier(.2, .8, .3, 1) both; }
+    .tld span {
+      animation: type 0.01s steps(1, end) both;
+      animation-delay: calc(0.3s + var(--i) * 0.15s);
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes move-up {
+      0% {
+        transform: translateY(20vh) scale(1.25);
+      }
+      55% {
+        transform: translateY(20vh) scale(1.25);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes strike {
+      0%   { opacity: 0; transform: scale(1.06) translateY(-0.02em); }
+      60%  { opacity: 1; transform: scale(0.99); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes type { to { opacity: 1; } }
+
+    @keyframes appear {
+      0% {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .text-block { text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      h1, .strike, .tld span, .meta-inline, .ribbon-divider, .text-block, footer {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <main>
+    <h1 aria-label="Ř.xyz">
+      <span class="strike" lang="cs" aria-hidden="true">Ř</span><span class="tld" aria-hidden="true"><span style="--i:0">.</span><span style="--i:1">x</span><span style="--i:2">y</span><span style="--i:3">z</span></span>
+    </h1>
+
+    <div class="meta-inline">
+      <span class="meta-item"><strong>Ř</strong> U+0158</span>
+      <span class="meta-sep">-</span>
+      <span class="meta-item"><strong>ř</strong> U+0159</span>
+      <span class="meta-sep">-</span>
+      <span class="meta-item">
+        <strong>/r̝/</strong>
+        <button class="play-btn" id="playBtn" aria-label="Listen to pronunciation">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          LISTEN
+        </button>
+      </span>
+      <span class="meta-sep">-</span>
+      <span class="meta-item">punycode: <strong>xn--hga</strong></span>
+    </div>
+
+    <div class="ribbon-divider" role="separator" aria-hidden="true"></div>
+
+    <article class="text-block">
+      <p>
+        Welcome, internet wanderer, to my website dedicated to the mostly Czech letter Ř. If you want to know more about this character, I can recommend the <a href="https://en.wikipedia.org/wiki/%C5%98">Wikipedia article</a> written about this very unusual character, as this website is currently pretty empty.
+      </p>
+      <p>
+        You might also wonder how did I even manage to get this interesting character in the domain name. In that case, be sure to check out my <a href="https://jiri.caha.cloud">blog post</a>, where I go into detail of this matter and maybe someday, you can have a cool domain of your own as well!
+      </p>
+    </article>
+  </main>
+
+  <footer>
+    <a href="https://jiri.caha.cloud" rel="noopener">jiri.caha.cloud</a>
+  </footer>
+
+  <script>
+    const audioSource = 'audio/r.mp3';
+
+    document.getElementById('playBtn').addEventListener('click', function() {
+      if (audioSource) {
+        const audio = new Audio(audioSource);
+        audio.play().catch(function(err) { console.error("Audio error:", err); });
+      } else if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance("ř");
+        utterance.lang = "cs-CZ";
+        utterance.rate = 0.8;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert("Audio playback is not supported on this browser.");
+      }
+    });
+  </script>
+</body>
+</html>
